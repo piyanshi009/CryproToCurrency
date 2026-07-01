@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>DASHBOARD</title>
 </head>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -148,7 +148,7 @@ canvas{
     </div>
 
     <div class="section">
-        <h2>Conversion Trend Chart</h2>
+        <h2>Bitcoin Price Trend (Last 7 Days)</h2>
         <canvas id="myChart"></canvas>
     </div>
 
@@ -160,6 +160,10 @@ canvas{
 <script>
 
 const username = localStorage.getItem("username");
+
+if(!username){
+    window.location.href = "index.html";
+}
 
 document.getElementById("welcome").textContent =
     "Welcome, " + username;
@@ -218,26 +222,31 @@ function saveFavorite(){
 
     const pair = from + " → " + to;
 
+    const username =
+    localStorage.getItem("username");
+
     let favorites =
-    JSON.parse(localStorage.getItem("favorites")) || [];
+    JSON.parse(
+        localStorage.getItem(username + "_favorites")
+    ) || [];
 
     if(!favorites.includes(pair)){
+
         favorites.push(pair);
 
         localStorage.setItem(
-            "favorites",
+            username + "_favorites",
             JSON.stringify(favorites)
         );
     }
 
     loadFavorites();
-
 }
 
 function loadFavorites(){
 
     let favorites =
-    JSON.parse(localStorage.getItem("favorites")) || [];
+    JSON.parse(localStorage.getItem(username + "_favorites")) || [];
 
     const list =
     document.getElementById("favoriteList");
@@ -303,13 +312,6 @@ async function loadChart(){
 
 }
 
-function logout(){
-
-    localStorage.removeItem("username");
-
-    window.location.href="index.html";
-
-}
 function logout(){
 
     localStorage.removeItem("username");
